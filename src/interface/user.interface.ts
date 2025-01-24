@@ -10,7 +10,7 @@ export interface IUser {
 
 export interface IUserDocument extends IUser, Document {}
 
-export interface IUserAuth extends IUser, Pick<IUserDocument, 'id'> {
-  access_token: string;
-  refresh_token: string;
+export interface IUserAuth extends IUser, Pick<IUserDocument, '_id'> {
+  access_token?: string;
+  refresh_token?: string;
 }
