@@ -33,25 +33,11 @@ const userSchemaFields: Record<keyof IUser, any> = {
   },
 };
 
-const userSchema = new Schema(userSchemaFields, {
+const userSchema: Schema = new Schema(userSchemaFields, {
   timestamps: true,
-  toJSON: {
-    transform: (doc, ret) => {
-      ret.id = ret._id;
-      delete ret._id;
-      delete ret.__v;
-      delete ret.password;
-    },
-  },
-  toObject: {
-    transform: (doc, ret) => {
-      ret.id = ret._id;
-      delete ret._id;
-      delete ret.__v;
-      delete ret.password;
-    },
-  },
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
 });
 
-const UserModel = model<IUserDocument>('User', userSchema);
+const UserModel = model<IUserDocument>('user', userSchema);
 export default UserModel;
