@@ -5,7 +5,7 @@ import { Request, Response } from 'express';
 import cors from 'cors';
 
 // import routers
-
+import authRouter from './routes/auth.routes';
 // import config variables
 const { NODE_ENV } = config;
 
@@ -43,6 +43,7 @@ app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 app.use(express.json({ limit: '100mb' }));
 
 // use routers
+app.use('/auth', authRouter);
 
 // handle 404 errors
 app.use(function (_req: Request, res: Response) {
