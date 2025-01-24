@@ -15,4 +15,5 @@ export const config: ConfigTypes = {
   LOCAL_PORT: envVariables.LOCAL_PORT,
   MONGODB_URI: envVariables.MONGODB_URI,
   JWT_SECRET: envVariables.JWT_SECRET,
+  REFRESH_TOKEN_SECRET: envVariables.REFRESH_TOKEN_SECRET,
 };

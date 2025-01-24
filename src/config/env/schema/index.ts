@@ -10,4 +10,5 @@ export const schema = {
     .description('Production Database host name')
     .required(),
   JWT_SECRET: Joi.string().required(),
+  REFRESH_TOKEN_SECRET: Joi.string().required(),
 };
