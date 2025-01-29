@@ -1,5 +1,9 @@
 import { Router } from 'express';
-import { localRegistration, validateRequests } from '../controllers/auth';
+import {
+  localRegistration,
+  validateRequests,
+  localLogin,
+} from '../controllers/auth';
 import { auth } from '../middlewares';
 import validateBody from '../utils/validateBody';
 
@@ -11,5 +15,7 @@ router.post(
   validateBody,
   localRegistration,
 );
+
+router.post('/login', validateRequests('login'), validateBody, localLogin);
 
 export default router;
