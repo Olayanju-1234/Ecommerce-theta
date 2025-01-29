@@ -24,8 +24,6 @@ const reviewSchemaFields: Record<keyof IReview, any> = {
 
 const reviewSchema: Schema = new Schema(reviewSchemaFields, {
   timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
 });
 
 const ReviewModel = model<IReviewDocument>('review', reviewSchema);

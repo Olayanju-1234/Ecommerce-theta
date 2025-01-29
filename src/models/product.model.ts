@@ -52,8 +52,6 @@ const productSchemaFields: Record<keyof IProduct, any> = {
 
 const productSchema: Schema = new Schema(productSchemaFields, {
   timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
 });
 
 const ProductModel = model<IProductDocument>('product', productSchema);

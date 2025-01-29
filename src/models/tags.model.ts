@@ -11,8 +11,6 @@ const tagSchemaFields: Record<keyof ITag, any> = {
 
 const tagSchema: Schema = new Schema(tagSchemaFields, {
   timestamps: true,
-  toJSON: { virtuals: true },
-  toObject: { virtuals: true },
 });
 
 const TagModel = model<ITagDocument>('tag', tagSchema);
