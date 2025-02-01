@@ -16,4 +16,11 @@ export const config: ConfigTypes = {
   MONGODB_URI: envVariables.MONGODB_URI,
   JWT_SECRET: envVariables.JWT_SECRET,
   REFRESH_TOKEN_SECRET: envVariables.REFRESH_TOKEN_SECRET,
+  EMAIL: envVariables.EMAIL,
+  EMAIL_PASSWORD: envVariables.EMAIL_PASSWORD,
+  EMAIL_SERVICE: envVariables.EMAIL_SERVICE,
+  EMAIL_PORT: envVariables.EMAIL_PORT,
+  EMAIL_HOST: envVariables.EMAIL_HOST,
+  EMAIL_SECURE: envVariables.EMAIL_SECURE,
+  EMAIL_FROM: envVariables.EMAIL_FROM,
 };

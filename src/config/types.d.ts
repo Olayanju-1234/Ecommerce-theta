@@ -5,4 +5,11 @@ export type ConfigTypes = {
   MONGODB_URI: string;
   JWT_SECRET: string;
   REFRESH_TOKEN_SECRET: string;
+  EMAIL: string;
+  EMAIL_PASSWORD: string;
+  EMAIL_SERVICE: string;
+  EMAIL_PORT: number;
+  EMAIL_HOST: string;
+  EMAIL_SECURE: boolean;
+  EMAIL_FROM: string;
 };
