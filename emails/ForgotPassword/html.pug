@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    meta(charset="UTF-8")
+    title Reset Your Password
+    link(rel="stylesheet", href="../assets/styles.css")
+  body
+    div.email-container
+      h1 Password Reset Request
+      p Hello #{firstname},  
+      p We received a request to reset your password. If you didn’t make this request, you can ignore this email.
+      p Click the button below to reset your password:
+      a.email-button(href="#{token}") Reset Password
+      p If the button doesn’t work, copy and paste this link in your browser:
+      p #{token}}
+      hr
+      p If you have any questions, contact our support.
