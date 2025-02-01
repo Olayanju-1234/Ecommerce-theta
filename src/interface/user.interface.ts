@@ -6,6 +6,9 @@ export interface IUser {
   password: string;
   access_level: number;
   country: string;
+  verifcation_token?: string;
+  reset_password_token?: string;
+  reset_password_expires?: Date;
 }
 
 export interface IUserDocument extends IUser, Document {}

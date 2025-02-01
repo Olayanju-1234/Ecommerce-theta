@@ -31,6 +31,15 @@ const userSchemaFields: Record<keyof IUser, any> = {
     type: String,
     required: true,
   },
+  verifcation_token: {
+    type: String,
+  },
+  reset_password_token: {
+    type: String,
+  },
+  reset_password_expires: {
+    type: Date,
+  },
 };
 
 const userSchema: Schema = new Schema(userSchemaFields, {
