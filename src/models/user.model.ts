@@ -31,6 +31,10 @@ const userSchemaFields: Record<keyof IUser, any> = {
     type: String,
     required: true,
   },
+  is_verified: {
+    type: Boolean,
+    default: false,
+  },
   verifcation_token: {
     type: String,
   },
@@ -38,7 +42,7 @@ const userSchemaFields: Record<keyof IUser, any> = {
     type: String,
   },
   reset_password_expires: {
-    type: Date,
+    type: Number,
   },
 };
 
