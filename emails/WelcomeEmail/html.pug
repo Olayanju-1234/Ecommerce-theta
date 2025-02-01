@@ -1,20 +1,17 @@
-// html.pug
+doctype html
 html
   head
-    style.
-      body { font-family: Arial, sans-serif; background-color: #f7f7f7; color: #333; padding: 0; margin: 0; }
-      .email-container { max-width: 600px; margin: 0 auto; padding: 20px; background-color: #fff; }
-      .header { text-align: center; }
-      .footer { text-align: center; font-size: 12px; color: #888; padding-top: 20px; }
+    meta(charset="UTF-8")
+    title Welcome to Our Platform
+    link(rel="stylesheet", href="../assets/styles.css")
   body
-    .email-container
-      .header
-        img(src=assetsPath + "/logo.png", alt="Company Logo", width="150")
-        h1 Welcome, #{firstname} with token of Welcome to Our Platform, #{verification_token}!!
-        p Thank you for signing up for our platform. We're thrilled to have you with us.
-      .body
-        p Please click the link below to verify your email address and get started:
-        a(href=verificationLink) Verify My Email
-      .footer
-        p If you did not sign up for this account, please ignore this email.
-        img(src=assetsPath + "/footer.png", alt="Footer Image", width="200")
+    div.email-container
+      h1 Welcome, #{firstname}! 🎉
+      p We're excited to have you on board. Your account has been successfully created.
+      p Before you get started, please verify your email by entering this verification code:
+      h2.verification-code #{token}
+      p Simply enter this code on our platform to activate your account.
+      p If you have any questions, feel free to reach out.
+      hr
+      p Cheers,  
+      p <strong>The Team</strong>
