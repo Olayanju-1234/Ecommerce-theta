@@ -1,6 +1,11 @@
 import { ISignUpPayload, ISignUpResponse } from '../../interface';
 import User from '../../models/user.model';
 import { hash } from 'bcryptjs';
+import { SendEmailFromTemplate } from '../Email';
+import { config } from '../../config/env';
+import { nanoid } from 'nanoid';
+
+const { EMAIL } = config;
 
 export const LocalSignUp = async (
   payload: ISignUpPayload,
@@ -21,6 +26,21 @@ export const LocalSignUp = async (
     firstname,
     lastname,
     country,
+  });
+
+  // generate a verification token
+  const verifcation_token = nanoid(6).toUpperCase();
+  newUser.verifcation_token = verifcation_token;
+
+  await SendEmailFromTemplate({
+    template: 'WelcomeEmail',
+    from: EMAIL,
+    to: email,
+    data: {
+      firstname,
+      email,
+      token: verifcation_token,
+    },
   });
 
   await newUser.save();
