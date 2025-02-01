@@ -35,7 +35,7 @@ const userSchemaFields: Record<keyof IUser, any> = {
     type: Boolean,
     default: false,
   },
-  verifcation_token: {
+  verification_token: {
     type: String,
   },
   reset_password_token: {

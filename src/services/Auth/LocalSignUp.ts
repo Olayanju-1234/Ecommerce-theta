@@ -28,9 +28,8 @@ export const LocalSignUp = async (
     country,
   });
 
-  // generate a verification token
-  const verifcation_token = nanoid(6).toUpperCase();
-  newUser.verifcation_token = verifcation_token;
+  const verification_token = nanoid(6).toUpperCase();
+  newUser.verification_token = verification_token;
 
   await SendEmailFromTemplate({
     template: 'WelcomeEmail',
@@ -39,7 +38,7 @@ export const LocalSignUp = async (
     data: {
       firstname,
       email,
-      token: verifcation_token,
+      token: verification_token,
     },
   });
 

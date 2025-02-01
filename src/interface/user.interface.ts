@@ -7,7 +7,7 @@ export interface IUser {
   access_level: number;
   country: string;
   is_verified?: boolean;
-  verifcation_token?: string;
+  verification_token?: string;
   reset_password_token?: string;
   reset_password_expires?: number;
 }

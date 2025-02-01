@@ -118,7 +118,7 @@ export const resetPassword = async (req: Request, res: Response) => {
   try {
     const { password, token } = req.body;
 
-    const response = await ResetPassword(password, token);
+    const response = await ResetPassword(token, password);
 
     return successResponse(res, 200, response);
   } catch (error: any) {

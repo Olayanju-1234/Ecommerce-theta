@@ -4,6 +4,9 @@ import { SendEmailFromTemplate } from '../Email';
 export const VerifyEmail = async (token: string) => {
   const user = await UserModel.findOne({ verification_token: token });
 
+  console.log(token);
+  console.log(user);
+
   if (!user) {
     throw new Error('Invalid verification token');
   }
