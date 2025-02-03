@@ -3,6 +3,7 @@ import logger from 'morgan';
 import { config } from './config/env';
 import { Request, Response } from 'express';
 import cors from 'cors';
+import { setupSwagger } from './config/swagger';
 
 // import routers
 import authRouter from './routes/auth.routes';
@@ -10,8 +11,14 @@ import authRouter from './routes/auth.routes';
 const { NODE_ENV } = config;
 
 const app = express();
+setupSwagger(app);
 
-let whitelist: string[] = ['http://localhost:3000', 'https://localhost:3000'];
+let whitelist: string[] = [
+  'http://localhost:3000',
+  'https://localhost:3000',
+  'http://localhost:5000',
+  'https://localhost:5000',
+];
 
 const corsOptions = async (req: Request, callback: any) => {
   const requestedPath = req.path;
@@ -42,8 +49,16 @@ app.use(logger('dev'));
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
 app.use(express.json({ limit: '100mb' }));
 
+// Health check endpoint
+app.get('/health', (_req: Request, res: Response) => {
+  res.status(200).json({
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+  });
+});
+
 // use routers
-app.use('/auth', authRouter);
+app.use('/api/auth', authRouter);
 
 // handle 404 errors
 app.use(function (_req: Request, res: Response) {
