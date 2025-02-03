@@ -18,16 +18,16 @@ export const SendEmail = async (payload: EmailPayload, html: string) => {
     replyTo,
     attachments: [
       ...(attachments || []),
-      {
-        filename: 'logo.png',
-        path: path.join(assetsPath, 'logo.png'),
-        cid: 'logo', // Embedded image in email
-      },
-      {
-        filename: 'footer.png',
-        path: path.join(assetsPath, 'footer.png'),
-        cid: 'footer',
-      },
+      // {
+      //   filename: 'logo.png',
+      //   path: path.join(assetsPath, 'logo.png'),
+      //   cid: 'logo', // Embedded image in email
+      // },
+      // {
+      //   filename: 'footer.png',
+      //   path: path.join(assetsPath, 'footer.png'),
+      //   cid: 'footer',
+      // },
     ],
   });
 };
