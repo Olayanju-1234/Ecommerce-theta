@@ -19,7 +19,7 @@ router.post(
   localRegistration,
 );
 
-router.post('/login', validateRequests('login'), validateBody, localLogin);
+router.post('/signin', validateRequests('login'), validateBody, localLogin);
 
 router.post(
   '/forgot-password',
