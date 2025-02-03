@@ -7,6 +7,7 @@ import { setupSwagger } from './config/swagger';
 
 // import routers
 import authRouter from './routes/auth.routes';
+import userRouter from './routes/user.routes';
 // import config variables
 const { NODE_ENV } = config;
 
@@ -59,6 +60,7 @@ app.get('/health', (_req: Request, res: Response) => {
 
 // use routers
 app.use('/api/auth', authRouter);
+app.use('/api/user', userRouter);
 
 // handle 404 errors
 app.use(function (_req: Request, res: Response) {

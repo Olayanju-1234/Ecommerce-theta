@@ -10,6 +10,7 @@ export interface IUser {
   verification_token?: string;
   reset_password_token?: string;
   reset_password_expires?: number;
+  profile_picture?: string;
 }
 
 export interface IUserDocument extends IUser, Document {}

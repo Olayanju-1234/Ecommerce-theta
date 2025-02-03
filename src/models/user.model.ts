@@ -44,6 +44,10 @@ const userSchemaFields: Record<keyof IUser, any> = {
   reset_password_expires: {
     type: Number,
   },
+  profile_picture: {
+    type: String,
+    default: '',
+  },
 };
 
 const userSchema: Schema = new Schema(userSchemaFields, {
