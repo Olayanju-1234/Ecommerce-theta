@@ -18,4 +18,7 @@ export const schema = {
   EMAIL_HOST: Joi.string().required(),
   EMAIL_SECURE: Joi.boolean().required(),
   EMAIL_FROM: Joi.string().required(),
+  CLOUDINARY_NAME: Joi.string().required(),
+  CLOUDINARY_API_KEY: Joi.string().required(),
+  CLOUDINARY_SECRET: Joi.string().required(),
 };

@@ -1,7 +1,7 @@
-import dotenv from "dotenv";
-import { schema } from "./schema";
-import { Validate } from "./validators";
-import { ConfigTypes } from "../types";
+import dotenv from 'dotenv';
+import { schema } from './schema';
+import { Validate } from './validators';
+import { ConfigTypes } from '../types';
 dotenv.config();
 
 const envVarsSchema = Validate(schema);
@@ -23,4 +23,7 @@ export const config: ConfigTypes = {
   EMAIL_HOST: envVariables.EMAIL_HOST,
   EMAIL_SECURE: envVariables.EMAIL_SECURE,
   EMAIL_FROM: envVariables.EMAIL_FROM,
+  CLOUDINARY_NAME: envVariables.CLOUDINARY_NAME,
+  CLOUDINARY_API_KEY: envVariables.CLOUDINARY_API_KEY,
+  CLOUDINARY_SECRET: envVariables.CLOUDINARY_SECRET,
 };

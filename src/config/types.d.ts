@@ -12,4 +12,7 @@ export type ConfigTypes = {
   EMAIL_HOST: string;
   EMAIL_SECURE: boolean;
   EMAIL_FROM: string;
+  CLOUDINARY_NAME: string;
+  CLOUDINARY_API_KEY: string;
+  CLOUDINARY_SECRET: string;
 };
