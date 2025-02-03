@@ -26,4 +26,5 @@ export const config: ConfigTypes = {
   CLOUDINARY_NAME: envVariables.CLOUDINARY_NAME,
   CLOUDINARY_API_KEY: envVariables.CLOUDINARY_API_KEY,
   CLOUDINARY_SECRET: envVariables.CLOUDINARY_SECRET,
+  BASE_URL: envVariables.BASE_URL,
 };

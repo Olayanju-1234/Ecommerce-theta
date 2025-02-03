@@ -15,4 +15,5 @@ export type ConfigTypes = {
   CLOUDINARY_NAME: string;
   CLOUDINARY_API_KEY: string;
   CLOUDINARY_SECRET: string;
+  BASE_URL: string;
 };
