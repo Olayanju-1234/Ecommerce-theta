@@ -1,7 +1,7 @@
-import { IUserDocument, IProductDocument } from './';
+import { IUser, IProductDocument } from './';
 import { Document } from 'mongoose';
 export interface ICart {
-  user: string;
+  user: IUser | string;
   products: IProductDocument[] | string[];
 }
 
