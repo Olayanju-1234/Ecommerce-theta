@@ -1,6 +1,5 @@
 import { Document } from 'mongoose';
-import { IReview } from './reviews.interface';
-import { ITag } from './tags.interface';
+import { IReviewDocument, ITagDocument, IUser } from '../interface';
 export interface IProduct {
   name: string;
   rating?: number;
@@ -9,10 +8,13 @@ export interface IProduct {
   discount_percentage?: number;
   size?: string;
   category: string;
-  tags?: ITag[];
+  tags?: string[] | ITagDocument[];
   description: string;
-  image: string;
-  reviews?: IReview[];
+  images: string[];
+  reviews?: IReviewDocument[];
+  quantity?: number;
+  quantity_sold?: number;
+  seller: IUser | string;
 }
 
 export interface IProductDocument extends IProduct, Document {}

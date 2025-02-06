@@ -39,15 +39,27 @@ const productSchemaFields: Record<keyof IProduct, any> = {
     type: String,
     required: true,
   },
-  image: {
-    type: String,
-  },
+  images: [
+    {
+      type: String,
+    },
+  ],
   reviews: [
     {
       type: Schema.Types.ObjectId,
       ref: 'review',
     },
   ],
+  quantity: {
+    type: Number,
+  },
+  quantity_sold: {
+    type: Number,
+  },
+  seller: {
+    type: Schema.Types.ObjectId,
+    ref: 'user',
+  },
 };
 
 const productSchema: Schema = new Schema(productSchemaFields, {
