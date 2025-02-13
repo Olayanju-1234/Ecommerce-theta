@@ -6,3 +6,4 @@ export * from './auth.interface';
 export * from './reviews.interface';
 export * from './tags.interface';
 export * from './email.interface';
+export * from './filter.interface';
