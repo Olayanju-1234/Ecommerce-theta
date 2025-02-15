@@ -141,10 +141,10 @@
  *           schema:
  *             type: object
  *             required:
- *               - reset_password_token
+ *               - token
  *               - password
  *             properties:
- *               reset_password_token:
+ *               token:
  *                 type: string
  *                 example: ABC123
  *               password:
