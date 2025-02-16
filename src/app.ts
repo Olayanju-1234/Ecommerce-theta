@@ -10,7 +10,7 @@ import authRouter from './routes/auth.routes';
 import userRouter from './routes/user.routes';
 import productRouter from './routes/product.routes';
 // import config variables
-const { NODE_ENV, BASE_URL } = config;
+const { NODE_ENV, BASE_URL, APP_URL } = config;
 
 const app = express();
 setupSwagger(app);
@@ -21,6 +21,7 @@ let whitelist: string[] = [
   'http://localhost:5000',
   'https://localhost:5000',
   BASE_URL,
+  APP_URL,
 ];
 
 const corsOptions = async (req: Request, callback: any) => {

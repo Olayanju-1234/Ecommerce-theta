@@ -22,4 +22,5 @@ export const schema = {
   CLOUDINARY_API_KEY: Joi.string().required(),
   CLOUDINARY_SECRET: Joi.string().required(),
   BASE_URL: Joi.string().required(),
+  APP_URL: Joi.string().required(),
 };
