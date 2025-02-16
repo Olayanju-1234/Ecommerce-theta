@@ -19,16 +19,7 @@ export const validateRequests = (method: string) => {
   switch (method) {
     case 'getUser':
     case 'deleteUser': {
-      return [
-        param('id', 'Invalid user ID')
-          .isMongoId()
-          .bail()
-          .custom(async (id, { req }) => {
-            const user = await GetUser(id);
-            if (!user) throw new Error('User not found');
-            return true;
-          }),
-      ];
+      return [param('id', 'Invalid user ID').isMongoId()];
     }
     case 'changePassword': {
       return [
@@ -48,22 +39,11 @@ export const validateRequests = (method: string) => {
       ];
     }
     case 'addProfilePic': {
-      return [
-        // No additional validation needed here since multer handles file uploads
-      ];
+      return [];
     }
     case 'deactivateUser':
     case 'reactivateUser': {
-      return [
-        param('id', 'Invalid user ID')
-          .isMongoId()
-          .bail()
-          .custom(async (id, { req }) => {
-            const user = await GetUser(id);
-            if (!user) throw new Error('User not found');
-            return true;
-          }),
-      ];
+      return [param('id', 'Invalid user ID').isMongoId()];
     }
     case 'searchUsers': {
       return [
