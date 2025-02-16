@@ -1,5 +1,5 @@
 import { IUserAuth } from './user.interface';
-import { ObjectId } from 'mongoose';
+import { Types } from 'mongoose';
 
 export interface ISignUpPayload {
   email: string;
@@ -15,7 +15,7 @@ export interface ISignUpResponse {
 }
 
 export interface ITokenPayload {
-  _id: ObjectId | string;
+  _id: Types.ObjectId;
   access_level: number;
 }
 

@@ -12,7 +12,7 @@ export const LocalSignIn = async (email: string, password: string) => {
   if (!isMatch) throw new Error('Invalid password');
 
   return SignToken({
-    _id: user._id as string,
+    _id: user._id,
     access_level: user.access_level,
   });
 };
