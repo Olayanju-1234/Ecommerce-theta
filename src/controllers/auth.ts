@@ -8,6 +8,7 @@ import {
   ForgotPassword,
   ResetPassword,
 } from '../services/Auth';
+import { Enable2FA, Disable2FA, Verify2FA } from '../services/User';
 import { Request, Response } from 'express';
 
 export const validateRequests = (method: string) => {
@@ -123,5 +124,47 @@ export const resetPassword = async (req: Request, res: Response) => {
     return successResponse(res, 200, response);
   } catch (error: any) {
     return errorResponse(res, 500, error.message);
+  }
+};
+
+export const enable2FA = async (req: Request, res: Response) => {
+  try {
+    const { _id: userId } = req.user;
+    const otpAuthUrl = await Enable2FA(userId);
+    return successResponse(res, 200, {
+      message: '2FA enabled successfully',
+      otpAuthUrl,
+    });
+  } catch (error: any) {
+    return errorResponse(res, 400, error.message);
+  }
+};
+
+export const disable2FA = async (req: Request, res: Response) => {
+  try {
+    const { _id: userId } = req.user;
+    const user = await Disable2FA(userId);
+    return successResponse(res, 200, {
+      message: '2FA disabled successfully',
+      user,
+    });
+  } catch (error: any) {
+    return errorResponse(res, 400, error.message);
+  }
+};
+
+export const verify2FA = async (req: Request, res: Response) => {
+  try {
+    const { _id: userId } = req.user;
+    const { token } = req.body;
+
+    const isValid = await Verify2FA(userId, token);
+    if (!isValid) throw new Error('Invalid 2FA token');
+
+    return successResponse(res, 200, {
+      message: '2FA token verified successfully',
+    });
+  } catch (error: any) {
+    return errorResponse(res, 400, error.message);
   }
 };
