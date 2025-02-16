@@ -13,7 +13,9 @@ export const UpdateAccessLevel = async (
     throw new Error('User not found');
   }
 
-  await UserModel.updateOne({ _id: userId }, { access_level: accessLevel });
+  await UserModel.updateOne({ _id: userId }, { access_level: accessLevel })
+    .select('-password')
+    .exec();
 
   return {
     message: 'Access level updated successfully',
