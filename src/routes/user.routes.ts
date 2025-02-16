@@ -45,7 +45,7 @@ router.put(
   validateBody,
   updateUserAccessLevel,
 );
-router.post('/profile-pic', auth, Upload.single('profilePic'), addProfilePic);
+router.post('/add-profile-pic', auth, Upload.single('profilePic'), addProfilePic);
 
 router.put(
   '/:id/deactivate',
