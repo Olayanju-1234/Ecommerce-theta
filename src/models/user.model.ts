@@ -35,7 +35,14 @@ const userSchemaFields: Record<keyof IUser, any> = {
     type: Boolean,
     default: false,
   },
+  is_active: {
+    type: Boolean,
+    default: true,
+  },
   verification_token: {
+    type: String,
+  },
+  twofa: {
     type: String,
   },
   reset_password_token: {
