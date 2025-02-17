@@ -19,12 +19,6 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
 
       req.user = decoded;
 
-      if (decoded?.is_impersonating) {
-        if (req.method.toLowerCase() === 'get') return next();
-
-        return errorResponse(res, 401, 'Unauthorized');
-      }
-
       return next();
     });
   } catch (error) {
