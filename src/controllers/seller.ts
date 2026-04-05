@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { Types } from 'mongoose';
 import { StripeService } from '../services/Stripe';
 import { successResponse, errorResponse } from '../utils';
 import UserModel from '../models/user.model';
@@ -14,12 +15,14 @@ import ProductModel from '../models/product.model';
 export const getSellerDashboard = async (req: Request, res: Response) => {
   try {
     const sellerId = (req as any).user._id;
+    // Aggregate pipelines don't auto-cast strings to ObjectId — must cast explicitly
+    const sellerObjectId = new Types.ObjectId(sellerId);
 
     const [totalProducts, orderStats, recentOrders] = await Promise.all([
       ProductModel.countDocuments({ seller: sellerId }),
 
       OrderModel.aggregate([
-        { $match: { seller: sellerId } },
+        { $match: { seller: sellerObjectId } },
         {
           $group: {
             _id: '$status',
