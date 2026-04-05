@@ -11,6 +11,7 @@ import userRouter from './routes/user.routes';
 import productRouter from './routes/product.routes';
 import paymentRouter from './routes/payment.routes';
 import sellerRouter from './routes/seller.routes';
+import orderRouter from './routes/order.routes';
 // import config variables
 const { NODE_ENV, BASE_URL, APP_URL } = config;
 
@@ -81,6 +82,7 @@ app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
 app.use('/api/payment', paymentRouter);
 app.use('/api/seller', sellerRouter);
+app.use('/api/order', orderRouter);
 
 // handle 404 errors
 app.use(function (_req: Request, res: Response) {
