@@ -17,6 +17,6 @@ export const SendEmailFromTemplate = async (
     // Send the email with the generated subject and HTML
     await SendEmail({ ...payload, subject }, html);
   } catch (error) {
-    console.error('❌ Error sending email from template:', error);
+    process.stderr.write(`[email] template send failed: ${error}\n`);
   }
 };

@@ -39,7 +39,5 @@ const swaggerDocs = swaggerJSDoc(swaggerOptions);
 
 export const setupSwagger = (app: Express) => {
   app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
-  console.log('📄 Swagger Docs available at:');
-  console.log('👉 Local: http://localhost:5000/api-docs');
-  console.log('👉 Deployed: https://ecommerce-theta.onrender.com/api-docs');
+  process.stdout.write('[swagger] docs available at /api-docs\n');
 };

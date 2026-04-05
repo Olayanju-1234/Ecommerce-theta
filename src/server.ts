@@ -11,10 +11,10 @@ const server = createServer(app);
 connectDB()
   .then(() =>
     server.listen(port, () => {
-      console.log(`server running on *::${port}`);
+      process.stdout.write(`[server] listening on port ${port}\n`);
     }),
   )
   .catch((err) => {
-    console.log(err);
+    process.stderr.write(`[server] startup failed: ${err}\n`);
     process.exit(1);
   });
