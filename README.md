@@ -171,3 +171,117 @@ src/
 ## Live Demo
 
 Frontend: [angular-ecommerce-theta-two.vercel.app](https://angular-ecommerce-theta-two.vercel.app/)
+
+---
+
+## Architecture
+
+```mermaid
+graph TD
+    A[Buyer / Seller Client] -->|HTTPS| B[Express API - Port 5000]
+    B --> C{JWT Auth Middleware}
+    C -->|access_level 1| D[Buyer Routes]
+    C -->|access_level 2| E[Seller Routes]
+    C -->|access_level 3| F[Admin Routes]
+
+    D -->|POST /payment/checkout| G[Stripe Checkout Session]
+    G -->|destination charge| H[Seller Stripe Connect Account]
+    G -->|webhook event| I[POST /payment/webhook]
+    I -->|verify HMAC-SHA256| J[(MongoDB)]
+
+    E -->|POST /payment/connect/onboard| K[Stripe Express Account]
+    K -->|KYC complete| H
+    E -->|GET /seller/payouts| H
+
+    B --> J
+    B --> L[Cloudinary CDN]
+    B --> M[Nodemailer SMTP]
+```
+
+## Data Model — ERD
+
+```mermaid
+erDiagram
+    User {
+        ObjectId _id
+        string firstname
+        string lastname
+        string email
+        number access_level
+        string stripe_account_id
+        string stripe_account_status
+        bool stripe_onboarding_complete
+    }
+
+    Product {
+        ObjectId _id
+        string name
+        number price
+        number discount_percentage
+        string category
+        string[] images
+        ObjectId seller
+    }
+
+    Order {
+        ObjectId _id
+        ObjectId buyer
+        ObjectId seller
+        string status
+        string payment_status
+        number subtotal
+        number platform_fee
+        number total
+        string stripe_session_id
+        string stripe_payment_intent_id
+    }
+
+    OrderItem {
+        ObjectId product
+        number quantity
+        number price_at_purchase
+    }
+
+    Review {
+        ObjectId _id
+        ObjectId product
+        ObjectId user
+        number rating
+        string comment
+    }
+
+    Tag {
+        ObjectId _id
+        string name
+    }
+
+    User ||--o{ Product : "sells"
+    User ||--o{ Order : "buys (buyer)"
+    User ||--o{ Order : "fulfils (seller)"
+    Order ||--|{ OrderItem : "contains"
+    OrderItem }|--|| Product : "references"
+    Product ||--o{ Review : "receives"
+    Product }o--o{ Tag : "tagged with"
+```
+
+## Payment Flow
+
+```mermaid
+sequenceDiagram
+    participant Buyer
+    participant API
+    participant Stripe
+    participant Seller
+
+    Buyer->>API: POST /payment/checkout {items}
+    API->>Stripe: Create CheckoutSession (destination charge)
+    Stripe-->>API: {checkout_url, session_id}
+    API-->>Buyer: {checkout_url}
+
+    Buyer->>Stripe: Complete payment on hosted page
+    Stripe->>API: POST /payment/webhook (checkout.session.completed)
+    API->>API: Verify HMAC-SHA256 signature
+    API->>API: Create Order (idempotent on session_id)
+    Stripe->>Seller: Transfer (subtotal - 10% platform fee)
+```
+
