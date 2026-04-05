@@ -17,4 +17,7 @@ export type ConfigTypes = {
   CLOUDINARY_SECRET: string;
   BASE_URL: string;
   APP_URL: string;
+  STRIPE_SECRET_KEY: string;
+  STRIPE_WEBHOOK_SECRET: string;
+  STRIPE_PLATFORM_FEE_PERCENT: number;
 };

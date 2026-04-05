@@ -23,4 +23,7 @@ export const schema = {
   CLOUDINARY_SECRET: Joi.string().required(),
   BASE_URL: Joi.string().required(),
   APP_URL: Joi.string().required(),
+  STRIPE_SECRET_KEY: Joi.string().required(),
+  STRIPE_WEBHOOK_SECRET: Joi.string().required(),
+  STRIPE_PLATFORM_FEE_PERCENT: Joi.number().min(0).max(100).default(10),
 };

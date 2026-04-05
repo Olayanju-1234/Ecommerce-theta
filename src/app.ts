@@ -9,6 +9,8 @@ import { setupSwagger } from './config/swagger';
 import authRouter from './routes/auth.routes';
 import userRouter from './routes/user.routes';
 import productRouter from './routes/product.routes';
+import paymentRouter from './routes/payment.routes';
+import sellerRouter from './routes/seller.routes';
 // import config variables
 const { NODE_ENV, BASE_URL, APP_URL } = config;
 
@@ -50,8 +52,20 @@ app.disable('x-powered-by');
 
 app.use(logger('dev'));
 
+// IMPORTANT: The Stripe webhook route must receive the RAW body for signature
+// verification. Register it BEFORE express.json() parses incoming bodies.
+// The rawBodyMiddleware on that route handles its own body collection.
+app.use('/api/payment/webhook', (req, _res, next) => {
+  // Ensure express.json() does not consume this route's body
+  (req as any).skipJsonParse = true;
+  next();
+});
+
 app.use(express.urlencoded({ extended: true, limit: '100mb' }));
-app.use(express.json({ limit: '100mb' }));
+app.use((req, res, next) => {
+  if ((req as any).skipJsonParse) return next();
+  express.json({ limit: '100mb' })(req, res, next);
+});
 
 // Health check endpoint
 app.get('/health', (_req: Request, res: Response) => {
@@ -65,6 +79,8 @@ app.get('/health', (_req: Request, res: Response) => {
 app.use('/api/auth', authRouter);
 app.use('/api/user', userRouter);
 app.use('/api/product', productRouter);
+app.use('/api/payment', paymentRouter);
+app.use('/api/seller', sellerRouter);
 
 // handle 404 errors
 app.use(function (_req: Request, res: Response) {

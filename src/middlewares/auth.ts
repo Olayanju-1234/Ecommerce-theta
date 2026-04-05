@@ -26,10 +26,21 @@ export const auth = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+// access_level: 1 = buyer, 2 = seller, 3 = admin
+export const isSeller = (req: Request, res: Response, next: NextFunction) => {
+  const { user } = req;
+
+  if (user.access_level < 2) {
+    return errorResponse(res, 403, 'Seller account required');
+  }
+
+  return next();
+};
+
 export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
   const { user } = req;
 
-  if (user.access_level < 2) return errorResponse(res, 401, 'Unauthorized');
+  if (user.access_level < 3) return errorResponse(res, 403, 'Unauthorized');
 
   return next();
 };

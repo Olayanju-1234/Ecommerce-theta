@@ -55,6 +55,18 @@ const userSchemaFields: Record<keyof IUser, any> = {
     type: String,
     default: '',
   },
+  stripe_account_id: {
+    type: String,
+  },
+  stripe_account_status: {
+    type: String,
+    enum: ['pending', 'active', 'restricted', 'rejected'],
+    default: 'pending',
+  },
+  stripe_onboarding_complete: {
+    type: Boolean,
+    default: false,
+  },
 };
 
 const userSchema: Schema = new Schema(userSchemaFields, {
