@@ -1,41 +1,72 @@
 # Ecommerce API
 
-A production-ready two-sided e-commerce marketplace with Stripe Connect integration — buyers purchase from sellers, the platform takes a fee, and sellers receive payouts directly to their bank accounts.
+A two-sided e-commerce marketplace API with Stripe Connect integration. Buyers purchase from sellers; the platform collects a configurable fee on every transaction; sellers receive payouts directly to their bank accounts.
+
+## Table of Contents
+
+- [Architecture](#architecture)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [API Reference](#api-reference)
+- [Getting Started](#getting-started)
+- [Environment Variables](#environment-variables)
+- [Project Structure](#project-structure)
+- [Data Model](#data-model)
+- [Payment Flow](#payment-flow)
+
+---
 
 ## Architecture
 
+```mermaid
+graph TD
+    A[Buyer / Seller Client] -->|HTTPS| B[Express API :5000]
+    B --> C{JWT Auth Middleware}
+    C -->|access_level 1| D[Buyer Routes]
+    C -->|access_level 2| E[Seller Routes]
+    C -->|access_level 3| F[Admin Routes]
+
+    D -->|POST /payment/checkout| G[Stripe Checkout Session]
+    G -->|destination charge| H[Seller Stripe Connect Account]
+    G -->|webhook event| I[POST /payment/webhook]
+    I -->|verify HMAC-SHA256| J[(MongoDB)]
+
+    E -->|POST /payment/connect/onboard| K[Stripe Express Account]
+    K -->|KYC complete| H
+    E -->|GET /seller/payouts| H
+
+    B --> J
+    B --> L[Cloudinary CDN]
+    B --> M[Nodemailer SMTP]
 ```
-Buyer ──POST /checkout──▶ Stripe Checkout Session
-                               │  (destination charge: platform fee deducted)
-                               ▼
-                         Stripe Webhook ──▶ Order created in MongoDB
-                               │
-                               ▼
-                    Seller's Stripe Connect Account
-                         (auto-transfer minus 10% platform fee)
-```
+
+---
 
 ## Features
 
 ### Two-Sided Marketplace
-- **Seller onboarding** — Stripe Express Connect accounts with KYC via Stripe-hosted UI
-- **Buyer checkout** — Stripe Checkout Sessions with idempotent order creation on payment confirmation
-- **Platform fees** — Configurable application fee (default 10%) on every transaction
-- **Automatic payouts** — Funds transferred to seller's bank on weekly schedule after platform fee
-- **Seller dashboard** — Revenue stats, order management, and Stripe payout history
 
-### Payments & Security
-- Stripe webhook signature verification (HMAC-SHA256) — raw body preserved before `express.json()`
-- Idempotency on order creation (session ID checked before inserting)
-- Replay attack prevention via Stripe's `expires_at` on Checkout Sessions
-- Seller onboarding status sync — `account.updated` webhook keeps DB in sync with Stripe
-- `payment_intent.payment_failed` cancels orders automatically
+- Seller onboarding via Stripe Express Connect accounts with Stripe-hosted KYC
+- Buyer checkout using Stripe Checkout Sessions (destination charges)
+- Configurable platform fee (default 10%) deducted from every transaction
+- Automatic fund transfer to seller's bank account after platform fee
+- Seller dashboard with revenue stats, order management, and payout history
 
-### Product & User Management
-- Role-based access control — buyer (1), seller (2), admin (3)
+### Payments and Security
+
+- Stripe webhook signature verification (HMAC-SHA256) — raw body preserved before `express.json()` runs
+- Idempotent order creation: session ID checked before inserting to prevent duplicate orders
+- Seller onboarding status kept in sync with Stripe via `account.updated` webhook
+- `payment_intent.payment_failed` automatically cancels orders
+
+### Product and User Management
+
+- Role-based access control: buyer (1), seller (2), admin (3)
 - Product CRUD with image uploads (Cloudinary), tagging, reviews, and ratings
 - JWT access/refresh token authentication with OTP email verification
-- Transactional email via Nodemailer + Pug templates
+- Transactional email via Nodemailer and Pug templates
+
+---
 
 ## Tech Stack
 
@@ -51,15 +82,17 @@ Buyer ──POST /checkout──▶ Stripe Checkout Session
 | Validation | Celebrate (Joi), express-validator |
 | Docs | Swagger UI (`/api/docs`) |
 
-## API Overview
+---
+
+## API Reference
 
 ### Seller Connect — `/api/payment/connect`
 
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
-| POST | `/onboard` | seller | Create Stripe Connect account + return onboarding URL |
+| POST | `/onboard` | seller | Create Stripe Connect account and return onboarding URL |
 | GET | `/refresh` | seller | Refresh expired onboarding link |
-| GET | `/status` | seller | Check `charges_enabled` + `payouts_enabled` |
+| GET | `/status` | seller | Check `charges_enabled` and `payouts_enabled` |
 
 ### Checkout — `/api/payment`
 
@@ -73,17 +106,17 @@ Buyer ──POST /checkout──▶ Stripe Checkout Session
 | Method | Endpoint | Auth | Description |
 |--------|----------|------|-------------|
 | GET | `/dashboard` | seller | Aggregated stats: orders, revenue, products |
-| GET | `/orders` | seller | Paginated order list with status filter |
-| GET | `/payouts` | seller | Stripe payout history + available balance |
+| GET | `/orders` | seller | Paginated order list with optional status filter |
+| GET | `/payouts` | seller | Stripe payout history and available balance |
 
 ### Auth — `/api/auth`
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/register` | Register buyer or seller |
-| POST | `/login` | Authenticate + receive JWT tokens |
+| POST | `/register` | Register as buyer or seller |
+| POST | `/login` | Authenticate and receive JWT tokens |
 | POST | `/verify-otp` | Email OTP verification |
-| POST | `/forgot-password` | Password reset initiation |
+| POST | `/forgot-password` | Initiate password reset |
 
 ### Products — `/api/product`
 
@@ -93,12 +126,18 @@ Buyer ──POST /checkout──▶ Stripe Checkout Session
 | POST | `/` | seller | Create product with images |
 | PATCH | `/:id` | seller | Update product |
 | DELETE | `/:id` | seller | Delete product |
-| POST | `/:id/reviews` | buyer | Submit review |
+| POST | `/:id/reviews` | buyer | Submit a review |
+
+---
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js 18+, MongoDB, Stripe account, Cloudinary account
+
+- Node.js 18+
+- MongoDB
+- Stripe account (with Connect enabled)
+- Cloudinary account
 
 ### Setup
 
@@ -106,11 +145,13 @@ Buyer ──POST /checkout──▶ Stripe Checkout Session
 git clone https://github.com/Olayanju-1234/Ecommerce-theta.git
 cd Ecommerce-theta
 yarn install
-cp .env.example .env   # fill in values
+cp .env.example .env   # fill in all values
 yarn dev
 ```
 
-API docs at `http://localhost:5000/api/docs`
+API docs available at `http://localhost:5000/api/docs`
+
+---
 
 ## Environment Variables
 
@@ -147,6 +188,8 @@ BASE_URL=http://localhost:5000
 APP_URL=http://localhost:3000
 ```
 
+---
+
 ## Project Structure
 
 ```
@@ -160,45 +203,17 @@ src/
 │   └── user.ts      # User profile management
 ├── middlewares/
 │   ├── auth.ts      # JWT auth, isSeller, isAdmin guards
-│   └── stripeWebhook.ts  # Raw body collector for webhook signature
-├── models/          # Mongoose schemas (User, Product, Order, Review, Tag)
+│   └── stripeWebhook.ts  # Raw body collector for webhook verification
+├── models/          # Mongoose schemas: User, Product, Order, Review, Tag
 ├── routes/          # Express routers
 ├── services/
 │   └── Stripe/      # Stripe SDK wrapper (Connect, Checkout, Webhooks)
 └── utils/           # Response helpers
 ```
 
-## Live Demo
-
-Frontend: [angular-ecommerce-theta-two.vercel.app](https://angular-ecommerce-theta-two.vercel.app/)
-
 ---
 
-## Architecture
-
-```mermaid
-graph TD
-    A[Buyer / Seller Client] -->|HTTPS| B[Express API - Port 5000]
-    B --> C{JWT Auth Middleware}
-    C -->|access_level 1| D[Buyer Routes]
-    C -->|access_level 2| E[Seller Routes]
-    C -->|access_level 3| F[Admin Routes]
-
-    D -->|POST /payment/checkout| G[Stripe Checkout Session]
-    G -->|destination charge| H[Seller Stripe Connect Account]
-    G -->|webhook event| I[POST /payment/webhook]
-    I -->|verify HMAC-SHA256| J[(MongoDB)]
-
-    E -->|POST /payment/connect/onboard| K[Stripe Express Account]
-    K -->|KYC complete| H
-    E -->|GET /seller/payouts| H
-
-    B --> J
-    B --> L[Cloudinary CDN]
-    B --> M[Nodemailer SMTP]
-```
-
-## Data Model — ERD
+## Data Model
 
 ```mermaid
 erDiagram
@@ -256,13 +271,15 @@ erDiagram
     }
 
     User ||--o{ Product : "sells"
-    User ||--o{ Order : "buys (buyer)"
-    User ||--o{ Order : "fulfils (seller)"
+    User ||--o{ Order : "buys"
+    User ||--o{ Order : "fulfils"
     Order ||--|{ OrderItem : "contains"
     OrderItem }|--|| Product : "references"
     Product ||--o{ Review : "receives"
     Product }o--o{ Tag : "tagged with"
 ```
+
+---
 
 ## Payment Flow
 
@@ -282,6 +299,11 @@ sequenceDiagram
     Stripe->>API: POST /payment/webhook (checkout.session.completed)
     API->>API: Verify HMAC-SHA256 signature
     API->>API: Create Order (idempotent on session_id)
-    Stripe->>Seller: Transfer (subtotal - 10% platform fee)
+    Stripe->>Seller: Transfer (subtotal minus 10% platform fee)
 ```
 
+---
+
+## Live Demo
+
+Frontend: [angular-ecommerce-theta-two.vercel.app](https://angular-ecommerce-theta-two.vercel.app/)
