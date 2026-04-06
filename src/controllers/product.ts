@@ -186,7 +186,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
 
 export const getProductById = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const product = await GetProductById(id);
 
     if (!product) return errorResponse(res, 404, 'Product not found');
@@ -201,7 +201,7 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const updateProduct = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const payload: Partial<IProductDocument> = req.body;
     const { _id, access_level } = req.user;
 
@@ -235,7 +235,7 @@ export const updateProduct = async (req: Request, res: Response) => {
 
 export const deleteProduct = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { _id, access_level } = req.user;
 
     const product = await GetProductById(id);

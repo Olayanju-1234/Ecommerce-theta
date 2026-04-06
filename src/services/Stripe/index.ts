@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import { config } from '../../config/env';
 
 const stripe = new Stripe(config.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-03-31.basil',
+  apiVersion: '2025-02-24.acacia',
 });
 
 export const StripeService = {

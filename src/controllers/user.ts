@@ -115,7 +115,7 @@ export const changePassword = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { _id: requesterId, access_level } = req.user;
 
     const user = await GetUser(id);
@@ -138,7 +138,7 @@ export const deleteUser = async (req: Request, res: Response) => {
 
 export const updateUserAccessLevel = async (req: Request, res: Response) => {
   try {
-    const { id: userId } = req.params;
+    const userId = req.params.id as string;
     const { access_level } = req.body;
 
     if (req.user.access_level !== 3) {
@@ -178,7 +178,7 @@ export const addProfilePic = async (req: Request, res: Response) => {
 
 export const deactivateUser = async (req: Request, res: Response) => {
   try {
-    const { id: userId } = req.params;
+    const userId = req.params.id as string;
     const { _id: requesterId, access_level } = req.user;
 
     if (access_level !== 3 && userId !== requesterId.toString()) {
@@ -197,7 +197,7 @@ export const deactivateUser = async (req: Request, res: Response) => {
 
 export const reactivateUser = async (req: Request, res: Response) => {
   try {
-    const { id: userId } = req.params;
+    const userId = req.params.id as string;
 
     if (req.user.access_level !== 3) {
       return errorResponse(res, 403, 'Unauthorized to reactivate user');

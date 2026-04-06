@@ -25,7 +25,7 @@ export const SignToken = async (payload: ITokenPayload): Promise<IUserAuth> => {
   )
     .select('firstname lastname username email country')
     .lean()
-    .exec()) as IUserDocument;
+    .exec()) as unknown as IUserDocument;
 
   if (!user) throw new Error('User not found');
 
