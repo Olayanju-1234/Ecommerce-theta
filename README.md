@@ -1,6 +1,10 @@
-# Ecommerce API
+# Ecommerce API · Stripe Connect marketplace
 
 A two-sided e-commerce marketplace API with Stripe Connect integration. Buyers purchase from sellers; the platform collects a configurable fee on every transaction; sellers receive payouts directly to their bank accounts.
+
+**[Live storefront](https://angular-ecommerce-theta-two.vercel.app/)** · Angular frontend on Vercel that uses this API
+
+**At a glance:** Stripe Express Connect onboarding with Stripe-hosted KYC · destination charges with a configurable platform fee (default 10%) · raw-body webhook verification and idempotent order creation · seller status synced from `account.updated` · orders cancelled automatically on `payment_intent.payment_failed` · RBAC for buyers, sellers and admins
 
 ## Table of Contents
 
